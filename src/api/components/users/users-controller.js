@@ -191,6 +191,22 @@ async function deleteUser(request, response, next) {
   }
 }
 
+async function login(req, res) {
+  try {
+      const { email, password } = req.body;
+      const result = await authService.authenticateUser(email, password);
+
+      if (!result.success) {
+          return res.status(403).send("Error: " + result.message);
+      }
+
+      res.send("Success: " + result.message);
+  } catch (error) {
+      res.status(500).send("Internal Server Error");
+  }
+}
+
+
 module.exports = {
   getUsers,
   getUser,
@@ -198,4 +214,6 @@ module.exports = {
   updateUser,
   changePassword,
   deleteUser,
+  login,
+  
 };

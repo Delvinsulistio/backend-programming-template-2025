@@ -25,6 +25,19 @@ async function deleteUser(id) {
   return usersRepository.deleteUser(id);
 }
 
+async function authenticateUser(email, password) {
+  const user = await usersRepository.findUserByEmail(email);
+  if (!user) {
+      return { success: false, message: "INVALID PASSWORD" };
+  }
+
+  if (password !== user.password) {
+      return { success: false, message: "INVALID PASSWORD" };
+  }
+
+  return { success: true, message: "success" };
+}
+
 module.exports = {
   getUsers,
   getUser,
@@ -32,4 +45,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  authenticateUser,
 };
